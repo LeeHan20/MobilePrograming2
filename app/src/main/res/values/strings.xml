@@ -1,0 +1,12 @@
+<resources>
+    <!-- 기존에 있던 문자열들 -->
+    <string name="app_name">MobilePrograming</string>
+
+    <!-- 새로 추가할 문자열들 -->
+    <string name="main_title">오늘의 일기</string>
+    <string name="diary_hint">오늘은 어떤 하루였나요?</string>
+    <string name="button_save">저장하기</string>
+    <string name="toast_diary_saved">일기가 저장되었습니다.</string>
+    <string name="date_format">yyyy년 MM월 dd일</string>
+
+</resources>
