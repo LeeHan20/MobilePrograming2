@@ -23,6 +23,15 @@
         <activity
             android:name=".Main"
             android:exported="false" />
+        <activity
+            android:name=".Diary"
+            android:exported="false" />
+        <activity
+            android:name=".Calculator"
+            android:exported="false" />
+        <activity
+            android:name=".ImagePlayground"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -56,7 +56,7 @@ public class Login_main extends AppCompatActivity {
         }
     }
 
-    protected void handleImage() { // 'hadleImage'를 'handleImage'로 변경
+    protected void handleImage() { //
         imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.hannyang);
     }

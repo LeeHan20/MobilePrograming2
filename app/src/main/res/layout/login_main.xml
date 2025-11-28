@@ -34,7 +34,7 @@
         android:ems="10"
         android:layout_gravity="center_horizontal"
         android:inputType="textEmailAddress"
-        android:hint="email"
+        android:hint="test"
         android:textColorHint="#808080"
         android:textAlignment="center"/>
 
@@ -45,7 +45,7 @@
         android:ems="10"
         android:layout_gravity="center_horizontal"
         android:inputType="textPassword"
-        android:hint="password"
+        android:hint="1234"
         android:textColorHint="#808080"
         android:textAlignment="center" />
 
@@ -55,6 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="Login!" />
+        android:text="Login" />
 
 </LinearLayout>

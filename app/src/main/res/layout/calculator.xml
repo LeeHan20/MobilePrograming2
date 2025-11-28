@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:stretchColumns="1"
+    tools:context=".Calculator">
+
+    <TableRow>
+        <TextView android:text="Number1" />
+        <EditText
+            android:id="@+id/num1_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned" />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="Number2" />
+        <EditText
+            android:id="@+id/num2_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:text="+" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:id="@+id/subtract_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:text="-" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:id="@+id/multiply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:text="*" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:id="@+id/divide_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:text="/" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginTop="20dp">
+        <TextView
+            android:id="@+id/result_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_span="2"
+            android:background="#FFEB3B"
+            android:gravity="end|center_vertical"
+            android:padding="10dp"
+            android:text="0"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginBottom="23dp"
+        android:text="돌아가기"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</TableLayout>
+
