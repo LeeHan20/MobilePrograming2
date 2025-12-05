@@ -3,10 +3,13 @@ package com.example.mobileprograming;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Main extends AppCompatActivity {
+
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,5 +34,12 @@ public class Main extends AppCompatActivity {
             Intent intent = new Intent(Main.this, ImagePlayground.class);
             startActivity(intent);
         });
+
+        handleImage();
+    }
+
+    protected void handleImage() { //
+        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setImageResource(R.drawable.hannyang);
     }
 }

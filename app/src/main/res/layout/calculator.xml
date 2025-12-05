@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:stretchColumns="1"
+    android:background="#EFECE3"
     tools:context=".Calculator">
 
     <TableRow>
