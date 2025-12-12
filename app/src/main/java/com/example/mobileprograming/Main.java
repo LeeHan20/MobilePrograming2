@@ -19,6 +19,7 @@ public class Main extends AppCompatActivity {
         Button diaryButton = findViewById(R.id.diary_button);
         Button calculatorButton = findViewById(R.id.calculator_button);
         Button imagePlaygroundButton = findViewById(R.id.image_playground_button);
+        Button logoutButton = findViewById(R.id.logout);
 
         diaryButton.setOnClickListener(v -> {
             Intent intent = new Intent(Main.this, Diary.class);
@@ -32,6 +33,11 @@ public class Main extends AppCompatActivity {
 
         imagePlaygroundButton.setOnClickListener(v -> {
             Intent intent = new Intent(Main.this, ImagePlayground.class);
+            startActivity(intent);
+        });
+
+        logoutButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Main.this, Login_main.class);
             startActivity(intent);
         });
 
