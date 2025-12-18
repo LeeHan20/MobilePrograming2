@@ -7,6 +7,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Arrays;
+
 public class Main extends AppCompatActivity {
 
     ImageView imageView;
@@ -42,6 +44,11 @@ public class Main extends AppCompatActivity {
         });
 
         handleImage();
+
+        CurvedScrollView curved = findViewById(R.id.curvedScroll);
+        curved.setItems(Arrays.asList(
+                "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine")
+        );
     }
 
     protected void handleImage() { //
