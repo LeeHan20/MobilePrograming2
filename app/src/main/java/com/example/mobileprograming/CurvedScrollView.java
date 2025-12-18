@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.VelocityTracker; // 속도 추적 추가
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.OverScroller;
@@ -20,23 +21,22 @@ public class CurvedScrollView extends View {
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final OverScroller scroller;
     private final int touchSlop;
+    private VelocityTracker velocityTracker;
 
     private List<String> items = new ArrayList<>();
     private final List<Integer> itemCenters = new ArrayList<>();
 
-    private int scrollY = 0;
-    private float lastY;
+    private int scrollX = 0; // 가로 스크롤을 위해 scrollX로 변경
+    private float lastX;
 
-    private final int itemSpacing = 32;
-    private final float textSize = 72f;
+    private final int itemSpacing = 60; // 아이템 간 간격
+    private final float textSize = 60f;
 
     public CurvedScrollView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(textSize);
         scroller = new OverScroller(context);
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-
         paint.setColor(Color.WHITE);
     }
 
@@ -47,6 +47,7 @@ public class CurvedScrollView extends View {
     public void setItems(List<String> list) {
         items.clear();
         items.addAll(list);
+        scrollX = 0; // 초기화
         invalidate();
     }
 
@@ -57,93 +58,98 @@ public class CurvedScrollView extends View {
 
         int width = getWidth();
         int height = getHeight();
+        int centerX = width / 2;
         int centerY = height / 2;
 
         itemCenters.clear();
 
-        int y = centerY - scrollY;
+        int startX = centerX - scrollX;
 
-        for (int i = 0; i < items.size(); i++) {
-            float dist = Math.abs(y - centerY);
-            float scrollPercent = (float) scrollY / Math.max(1, getTotalHeight());
+        for (int i = 0; i < items.size(); ++i) {
+            float xPos = startX + i * (textSize * 2 + itemSpacing);
 
-            float elementRatio = (float) i / Math.max(1, items.size() - 1);
-            float interpolated = (float) Math.cos((scrollPercent - elementRatio) * Math.PI);
+            float distFromCenter = xPos - centerX;
+            float maxDist = width / 2f;
 
-            float alpha = Math.max(0f, interpolated);
-            float indent = interpolated * width / 2f;
+            float normalizedDist = Math.max(-1f, Math.min(1f, distFromCenter / maxDist));
+
+            float interpolated = (float) Math.cos(normalizedDist * (Math.PI / 2.5f));
+            float alpha = Math.max(0.1f, interpolated);
+
+            float yOffset = (float) Math.sin(normalizedDist * (Math.PI / 2f)) * (height / 4f);
 
             paint.setAlpha((int) (alpha * 255));
-            paint.setTextSize(textSize * Math.max(0.5f, alpha));
+            paint.setTextSize(textSize * (0.6f + 0.4f * alpha));
+
+            float parameter3 = normalizedDist < 0 ? centerY - yOffset + (paint.getTextSize() / 3f) : centerY + yOffset + (paint.getTextSize() / 3f);
 
             canvas.drawText(
                     items.get(i),
-                    width / 2f + indent,
-                    y,
+                    xPos,
+                    parameter3,
                     paint
             );
 
-            itemCenters.add(scrollY + y - centerY);
-            y += textSize + itemSpacing;
+            itemCenters.add(i * (int)(textSize * 2 + itemSpacing));
         }
     }
 
-    private int getTotalHeight() {
-        return (int) ((textSize + itemSpacing) * items.size());
+    private int getTotalWidth() {
+        if (items.isEmpty()) return 0;
+        return (int) ((textSize * 2 + itemSpacing) * (items.size() - 1));
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (velocityTracker == null) velocityTracker = VelocityTracker.obtain();
+        velocityTracker.addMovement(event);
+
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 if (!scroller.isFinished()) scroller.abortAnimation();
-                lastY = event.getY();
+                lastX = event.getX();
                 return true;
 
             case MotionEvent.ACTION_MOVE:
-                float dy = lastY - event.getY();
-                if (Math.abs(dy) > touchSlop) {
-                    scrollY += dy;
-                    clampScroll();
+                float dx = lastX - event.getX();
+                if (Math.abs(dx) > 0) {
+                    scrollX += (int) dx;
                     invalidate();
-                    lastY = event.getY();
+                    lastX = event.getX();
                 }
                 return true;
 
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
+                velocityTracker.computeCurrentVelocity(1000);
+                float v = velocityTracker.getXVelocity();
+
+                scroller.fling(scrollX, 0, (int)-v, 0, 0, getTotalWidth(), 0, 0);
                 snapToNearest();
+
+                if (velocityTracker != null) {
+                    velocityTracker.recycle();
+                    velocityTracker = null;
+                }
                 return true;
         }
         return super.onTouchEvent(event);
     }
 
-    private void clampScroll() {
-        scrollY = Math.max(0, Math.min(scrollY, getTotalHeight()));
-    }
-
     private void snapToNearest() {
-        if (itemCenters.isEmpty()) return;
+        if (items.isEmpty()) return;
 
-        int minDist = Integer.MAX_VALUE;
-        int target = scrollY;
+        int itemWidth = (int)(textSize * 2 + itemSpacing);
+        int targetIndex = Math.round((float) scrollX / itemWidth);
+        int targetX = Math.max(0, Math.min(targetIndex * itemWidth, getTotalWidth()));
 
-        for (int c : itemCenters) {
-            int dist = Math.abs(c - scrollY);
-            if (dist < minDist) {
-                minDist = dist;
-                target = c;
-            }
-        }
-
-        scroller.startScroll(0, scrollY, 0, target - scrollY, 300);
+        scroller.startScroll(scrollX, 0, targetX - scrollX, 0, 400);
         postInvalidateOnAnimation();
     }
 
     @Override
     public void computeScroll() {
         if (scroller.computeScrollOffset()) {
-            scrollY = scroller.getCurrY();
+            scrollX = scroller.getCurrX();
             invalidate();
         }
     }
