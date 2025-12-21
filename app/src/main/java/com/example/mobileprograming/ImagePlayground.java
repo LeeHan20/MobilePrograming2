@@ -26,6 +26,7 @@ public class ImagePlayground extends AppCompatActivity {
             ImageView.ScaleType.MATRIX
     };
 
+    // 람다 함수를 적극 이용
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +40,14 @@ public class ImagePlayground extends AppCompatActivity {
         Button backToMainButton = findViewById(R.id.back_to_main_button);
         Button backgroundButton = findViewById(R.id.background_button);
 
+        // 이미지를 스케일함
         scaleTypeButton.setOnClickListener(v -> {
             currentScaleTypeIndex = (currentScaleTypeIndex + 1) % scaleTypes.length;
             ImageView.ScaleType newScaleType = scaleTypes[currentScaleTypeIndex];
             imageView.setScaleType(newScaleType);
         });
 
+        // 이미지를 회전함
         rotationButton.setOnClickListener(v -> {
             currentRotation += 45f;
             if (currentRotation >= 360f) {
@@ -53,6 +56,7 @@ public class ImagePlayground extends AppCompatActivity {
             imageView.setRotation(currentRotation);
         });
 
+        // 이미지의 투명도로 변경
         alphaButton.setOnClickListener(v -> {
             if (currentAlpha == 1.0f) {
                 currentAlpha = 0.5f;
@@ -62,10 +66,12 @@ public class ImagePlayground extends AppCompatActivity {
             imageView.setAlpha(currentAlpha);
         });
 
+
         backToMainButton.setOnClickListener(v -> {
             finish(); // Finish current activity and go back to the previous one (Main)
         });
-        
+
+        // 배경 색상을 바꿈
         backgroundButton.setOnClickListener(v -> {
             Random random = new Random();
             int red = random.nextInt(256);

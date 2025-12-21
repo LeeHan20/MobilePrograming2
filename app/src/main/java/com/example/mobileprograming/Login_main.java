@@ -43,6 +43,7 @@ public class Login_main extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
+        // 로그인 실패/성공에 따라 틀렸다고 띄우거나 main으로 감
         if (email.equals(VALID_EMAIL) && password.equals(VALID_PASSWORD)) {
             Toast.makeText(Login_main.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
 
@@ -56,6 +57,7 @@ public class Login_main extends AppCompatActivity {
         }
     }
 
+    // 하냥이 이미지 처리
     protected void handleImage() { //
         imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.hannyang);

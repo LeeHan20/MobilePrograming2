@@ -62,18 +62,21 @@ public class Diary extends AppCompatActivity {
         });
     }
 
+    // 기기에서 정보를 가져와 파싱하여 사용자에게 날자를 보여줌
     private void displayCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
         String currentDate = sdf.format(new Date());
         dateTextView.setText(currentDate);
     }
 
+    // 이전에 작성하였던 일기가 있으면 해당 일기를 가져옴
     private void loadDiary() {
         String todayKey = getTodayDateKey();
         String savedDiary = sharedPreferences.getString(todayKey, "");
         diaryEditText.setText(savedDiary);
     }
 
+    // 일기를 저장하고 메인 화면으로 돌아감
     private void saveDiary() {
         String diaryContent = diaryEditText.getText().toString();
         String todayKey = getTodayDateKey();
@@ -87,12 +90,14 @@ public class Diary extends AppCompatActivity {
         finish();
     }
 
+    // 날자 정보를 가져옴
     private String getTodayDateKey() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         String date = sdf.format(new Date());
         return DIARY_KEY_PREFIX + date;
     }
 
+    // 지루할 때 쓰라고 랜덤 넘버를 재미있게 보여줌
     private void showRandomNumber() {
 
         Random random = new Random();

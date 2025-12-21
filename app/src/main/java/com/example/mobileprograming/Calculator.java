@@ -15,6 +15,7 @@ public class Calculator extends AppCompatActivity {
     private EditText num2EditText;
     private TextView resultTextView;
 
+    // just 수업에서 한 계산기
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

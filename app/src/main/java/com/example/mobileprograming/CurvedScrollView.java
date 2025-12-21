@@ -16,6 +16,11 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 텍스트 아이템들을 가로 곡선 형태로 표시하는 커스텀 뷰입니다.
+ * 사용자의 가로 스크롤에 따라 아이템들이 반원 형태의 궤적을 그리며 이동하며,
+ * 스크롤이 멈출 때 가장 가까운 아이템으로 정렬되는 스냅(Snap) 기능을 포함합니다.
+ */
 public class CurvedScrollView extends View {
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -32,6 +37,7 @@ public class CurvedScrollView extends View {
     private final int itemSpacing = 60; // 아이템 간 간격
     private final float textSize = 60f;
 
+    // 생성자
     public CurvedScrollView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         paint.setTextAlign(Paint.Align.CENTER);
@@ -40,17 +46,20 @@ public class CurvedScrollView extends View {
         paint.setColor(Color.WHITE);
     }
 
+    // 생성자
     public CurvedScrollView(Context context) {
         this(context, null);
     }
 
+    // 아이템들을 가져옴
     public void setItems(List<String> list) {
         items.clear();
         items.addAll(list);
         scrollX = 0; // 초기화
-        invalidate();
+        invalidate(); // 뷰를 다시 그리도록 요청
     }
 
+    // 어떤어떤 복잡한 계산을 통해 뷰를 그려줌. 외부 산식을 가져옴
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -94,11 +103,13 @@ public class CurvedScrollView extends View {
         }
     }
 
+    // 토탈 너비를 계산
     private int getTotalWidth() {
         if (items.isEmpty()) return 0;
         return (int) ((textSize * 2 + itemSpacing) * (items.size() - 1));
     }
 
+    // 사용자가 터치, 스와이프를 하였을 때의 부드러운 동작을 정의
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (velocityTracker == null) velocityTracker = VelocityTracker.obtain();

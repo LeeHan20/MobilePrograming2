@@ -18,6 +18,7 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        // 모든 뷰와 버튼들 연결
         Button diaryButton = findViewById(R.id.diary_button);
         Button calculatorButton = findViewById(R.id.calculator_button);
         Button imagePlaygroundButton = findViewById(R.id.image_playground_button);
@@ -43,8 +44,10 @@ public class Main extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // 하냥이 사진 처리
         handleImage();
 
+        // 커브 스크롤 처리
         CurvedScrollView curved = findViewById(R.id.curvedScroll);
         curved.setItems(Arrays.asList(
                 "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine")
